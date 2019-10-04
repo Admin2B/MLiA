@@ -74,15 +74,56 @@ def createDataSet():
     labels=['no surfacing','flippers']
     return dataSet,labels
 
+def  classify(inputTree,featLabels,testVec):
+    firstStr=list(inputTree.keys())[0]
+    secondDict=inputTree[firstStr]
+    featIndex=featLabels.index(firstStr)
+    for key in secondDict.keys():
+        if testVec[featIndex]==key:
+            if type(secondDict[key]).__name__=='dict':
+                classLabel=classify(secondDict[key],featLabels,testVec)
+            else:
+                classLabel=secondDict[key]
+    return classLabel
+
+def storeTree(inputTree,filename):
+    import pickle
+    fw=open(filename,'wb')
+    pickle.dump(inputTree,fw)
+    fw.close()
+
+def grabTree(filename):
+    import pickle
+    fr=open(filename,'rb')
+    return pickle.load(fr)
+
+
 if __name__=='__main__':
-    dataSet,labels=createDataSet()
+    #dataSet,labels=createDataSet()
+
     #print(calcShannonEnt(dataSet))
+
     #print(splitDataSet(dataSet,0,0))
+
     #print(chooseBestFeatureToSplit(dataSet))
+
     #print(createTree(dataSet,labels))
     #treePlotter.createPlot()
-    myTree=treePlotter.retrieveTree(0)
-    treePlotter.createPlot(myTree)
+    #myTree=treePlotter.retrieveTree(0)
+    #treePlotter.createPlot(myTree)
+    #myTree = treePlotter.retrieveTree(0)
+    #print (classify(myTree,labels,[1,1]))
+
+    #storeTree(myTree,'result.txt')
+    #print (grabTree('result.txt'))
+
+    fr=open('lenses.txt')
+    lenses=[inst.strip().split('\t') for inst in fr.readlines()]
+    lensesLabels=['age','prescript','astigmatic','tearRate']
+    lensesTree=createTree(lenses,lensesLabels)
+    print (lensesTree)
+    treePlotter.createPlot(lensesTree)
+
 
 
 
