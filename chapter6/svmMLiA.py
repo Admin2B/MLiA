@@ -202,7 +202,8 @@ def smoP(dataMatIn,classLabels,C,toler,maxIter,kTup=('lin',0)):
                 print("fullSet,iter:%d i:%d ,pairs changed %d"%(iter,i,alphaPairsChanged))
             iter+=1
         else:
-            nonBoundIs=nonzero((oS.alphas.A>0)*(oS.alphas.A<C))[0]
+            nonBoundIs=nonzero((oS.alphas.A>0)*(oS.alphas.A<C))[0]   # alphas.A>0 表示 alphas 矩阵中所有大于0的元素置True，反之置False
+                                                                     # nonzeros 表示 得到数组array中非零元素的位置（数组索引）的函数
             for i in nonBoundIs:
                 alphaPairsChanged+=innerL(i,oS)
                 print("non-bound,iter:%d i:%d pairs changed:%d"%(iter,i,alphaPairsChanged))
