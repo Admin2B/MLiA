@@ -59,7 +59,7 @@ def biKmeans(dataSet,k,distMeas=distEclud):
     centList=[centroid0]
     for j in range(m):
         clusterAssment[j,1]=distMeas(mat(centroid0),dataSet[j,:])**2
-    while len(centList)<k:
+    while (len(centList)<k):
         lowestSSE=inf
         for i in range(len(centList)):
             ptsInCurrCluster=dataSet[nonzero(clusterAssment[:,0].A==i)[0],:]
@@ -76,14 +76,14 @@ def biKmeans(dataSet,k,distMeas=distEclud):
         bestClustAss[nonzero(bestClustAss[:,0].A==0)[0],0]=bestCentToSplit
         print("the bestCentToSplit is:",bestCentToSplit)
         print("the len of bestClustAss is:",len(bestClustAss))
-        centList[bestCentToSplit]=bestNewCents[0,:]
-        centList.append(bestNewCents[1,:])
+        centList[bestCentToSplit]=bestNewCents[0,:].tolist()[0]
+        centList.append(bestNewCents[1,:].tolist()[0])
         clusterAssment[nonzero(clusterAssment[:,0].A==bestCentToSplit)[0],:]=bestClustAss
     return mat(centList),clusterAssment
 
 def distSLC(vecA,vecB):
     a=sin(vecA[0,1]*pi/180)*sin(vecB[0,1]*pi/180)
-    b=cos(vecA[0,1]*pi/180)*sin(vecB[0,1]*pi/180)*cos(pi*(vecB[0,0]-vecA[0,0])/180)
+    b=cos(vecA[0,1]*pi/180)*cos(vecB[0,1]*pi/180)*cos(pi*(vecB[0,0]-vecA[0,0])/180)
     return arccos(a+b)*6371.0
 
 import matplotlib
@@ -117,13 +117,28 @@ def clusterClubs(numCluster=5):
 
 if __name__=='__main__':
     print("hello world")
-    datMat=mat(loadDataSet('dataset/testSet.txt'))
-    print(min(datMat[:,0]))
-    print(min(datMat[:,1]))
-    print(max(datMat[:,0]))
-    print(max(datMat[:,1]))
-    print(randCent(datMat,2))
-    print(distEclud(datMat[0],datMat[1]))
+    # datMat=mat(loadDataSet('dataset/testSet.txt'))
+    # print(min(datMat[:,0]))
+    # print(min(datMat[:,1]))
+    # print(max(datMat[:,0]))
+    # print(max(datMat[:,1]))
+    # print(randCent(datMat,2))
+    # print(distEclud(datMat[0],datMat[1]))
 
-    clusterClubs()
+    # datMat = mat(loadDataSet('dataset/testSet.txt'))
+    # myCentroids,clustAssing=kMeans(datMat,4)
+    # print("\n")
+    # print(myCentroids)
+    # print("\n")
+    # print(clustAssing)
+
+    # datMat3 = mat(loadDataSet('dataset/testSet2.txt'))
+    # centList,myNewAssments=biKmeans(datMat3,3)
+    # print(centList)
+
+    clusterClubs(6)
+
+
+
+
 
